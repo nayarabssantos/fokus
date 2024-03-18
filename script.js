@@ -1,10 +1,10 @@
 const html = document.querySelector('html');
 
-const focoBt = document.querySelector('.app__card-button--foco');
-const curtoBt = document.querySelector('.app__card-button--curto');
-const longoBt = document.querySelector('.app__card-button--longo');
-const startPauseBt = document.getElementById('start-pause');
-const botoes = document.querySelectorAll('.app__card-button');
+const btnFoco = document.querySelector('.app__card-button--foco');
+const btnCurto = document.querySelector('.app__card-button--curto');
+const btnLongo = document.querySelector('.app__card-button--longo');
+const btnComecarPausar = document.getElementById('start-pause');
+const btnTodos = document.querySelectorAll('.app__card-button');
 
 const displayTempo = document.getElementById('timer');
 
@@ -13,7 +13,7 @@ const musica = new Audio('/sons/luna-rise-part-one.mp3');
 const audioPausar = new Audio('/sons/pause.mp3');
 const audioComecar = new Audio('/sons/play.wav');
 const audioTempoFinalizado = new Audio('/sons/beep.mp3');
-const startPauseDesc = document.querySelector('span');
+const descComecarPausar = document.querySelector('span');
 
 let tempoDecorridoEmSegundos = 1500;
 let intervaloId = null;
@@ -37,27 +37,27 @@ musicaFocoInput.addEventListener('change', () =>{
     }
 });
 
-focoBt.addEventListener('click', () => {
+btnFoco.addEventListener('click', () => {
     tempoDecorridoEmSegundos = 1500;
     alterarContexto('foco')
-    focoBt.classList.add('active')
+    btnFoco.classList.add('active')
 });
 
-curtoBt.addEventListener('click', () => {
+btnCurto.addEventListener('click', () => {
     tempoDecorridoEmSegundos = 300;
     alterarContexto('descanso-curto')
-    curtoBt.classList.add('active')
+    btnCurto.classList.add('active')
 })
 
-longoBt.addEventListener('click', () => {
+btnLongo.addEventListener('click', () => {
     tempoDecorridoEmSegundos = 900;
     alterarContexto('descanso-longo')
-    longoBt.classList.add('active')
+    btnLongo.classList.add('active')
 })
 
 function alterarContexto(contexto){
     mostrarTempo();
-    botoes.forEach(function(contexto){
+    btnTodos.forEach(function(contexto){
         contexto.classList.remove('active')
     })
 
@@ -91,7 +91,7 @@ const contagemRegressiva = () => {
         alert('Tempo finalizado!');
         zerar();
         imgPlayPause.setAttribute('src', '/imagens/play_arrow.png')
-        startPauseDesc.innerText = 'Começar';
+        descComecarPausar.innerText = 'Começar';
         audioTempoFinalizado.pause();
         return ;
     }
@@ -99,19 +99,19 @@ const contagemRegressiva = () => {
     mostrarTempo();
 }
 
-startPauseBt.addEventListener('click', iniciarOuPausar);
+btnComecarPausar.addEventListener('click', iniciarOuPausar);
 
 function iniciarOuPausar(){
     if(intervaloId){
         imgPlayPause.setAttribute('src', '/imagens/play_arrow.png')
-        startPauseDesc.innerText = 'Começar';
+        descComecarPausar.innerText = 'Começar';
         audioPausar.play();
         zerar();
         return
     }
 
     imgPlayPause.setAttribute('src', '/imagens/pause.png')
-    startPauseDesc.innerText = 'Pausar';
+    descComecarPausar.innerText = 'Pausar';
     audioComecar.play();
     intervaloId = setInterval(contagemRegressiva, 1000)
 }
