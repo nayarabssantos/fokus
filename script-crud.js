@@ -1,13 +1,16 @@
 //encontrar botao adicionar tarefa
 const btnAddTarefa = document.querySelector('.app__button--add-task');
 const btnCancelar = document.querySelector('.app__form-footer__button--cancel');
+const btnRemoverConcluidas = document.querySelector('#btn-remover-concluidas');
+const btnRemoverTarefas = document.querySelector('#btn-remover-todas');
+
 const formAddTarefa = document.querySelector('.app__form-add-task');
 const textArea = document.querySelector('.app__form-textarea');
 const ulTarefas = document.querySelector('.app__section-task-list');
 const paragrafoDescTarefa = document.querySelector('.app__section-active-task-description');
 
 // se a primeira parte do OU nao der certo, faz a segunda
-const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 let tarefaSelecionada = null;
 let liTarefaSelecionada = null;
 
@@ -51,6 +54,18 @@ document.addEventListener('FocoFinalizado', () => {
         atualizarTarefas();
     }
 });
+
+btnRemoverConcluidas.onclick = () => {
+    const seletor = ".app__section-task-list-item-complete";
+    tarefas = tarefas.filter(tarefa => !tarefa.concluida);
+    removerTarefas(seletor, tarefas);
+};
+
+btnRemoverTarefas.onclick = () => {
+    const seletor = ".app__section-task-list-item";
+    tarefas = []
+    removerTarefas(seletor, tarefas);
+};
 
 function atualizarTarefas(){
     localStorage.setItem('tarefas', JSON.stringify(tarefas));
@@ -123,8 +138,18 @@ function criarElementoTarefa(tarefa){
     return li;
 }
 
+function removerTarefas(seletor, tarefas){
+    document.querySelectorAll(seletor)
+    .forEach(elemento => {
+        elemento.remove();
+    });
+    
+    atualizarTarefas();
+}
+
 function limparFormulario(){
     
     textArea.value = '';
     formAddTarefa.classList.add('hidden');
 }
+
