@@ -15,7 +15,7 @@ const audioComecar = new Audio('/sons/play.wav');
 const audioTempoFinalizado = new Audio('/sons/beep.mp3');
 const descComecarPausar = document.querySelector('span');
 
-let tempoDecorridoEmSegundos = 1500;
+let tempoDecorridoEmSegundos = 5 //1500;
 let intervaloId = null;
 
 musica.loop = true;
@@ -86,15 +86,25 @@ function alterarContexto(contexto){
 }
 
 const contagemRegressiva = () => {
+
     if(tempoDecorridoEmSegundos <=0){
         audioTempoFinalizado.play();
         alert('Tempo finalizado!');
+
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+
+        if(focoAtivo){
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento)
+        }
+
         zerar();
         imgPlayPause.setAttribute('src', '/imagens/play_arrow.png')
         descComecarPausar.innerText = 'Começar';
         audioTempoFinalizado.pause();
         return ;
     }
+
     tempoDecorridoEmSegundos -= 1;
     mostrarTempo();
 }
@@ -107,7 +117,7 @@ function iniciarOuPausar(){
         descComecarPausar.innerText = 'Começar';
         audioPausar.play();
         zerar();
-        return
+        return;
     }
 
     imgPlayPause.setAttribute('src', '/imagens/pause.png')
